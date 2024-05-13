@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sudoku</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
+    .container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .sudoku-grid {
+        display: grid;
+        grid-template-columns: repeat(9, 40px);
+        grid-template-rows: repeat(9, 40px);
+        gap: 1px;
+    }
+    .sudoku-grid input[type="text"] {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        border: none;
+        text-align: center;
+        font-size: 18px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+    .sudoku-grid input[readonly] {
+        background-color: #d8d9e3; /* Kolor szary */
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .form-group input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+    .message {
+        background-color: #ffcccc;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 50px auto;
+        max-width: 400px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .message_to_win {
+        background-color: #89e070;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 50px auto;
+        max-width: 400px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+        color: #ff3333;
+        font-size: 24px;
+    }
+    p {
+        color: #333;
+        font-size: 18px;
+        margin-top: 20px;
+    }
+    button[type="submit"] {
+    background-color: #4CAF50; /* Kolor tła */
+    color: white; /* Kolor tekstu */
+    padding: 12px 20px; /* Wielkość i odstępy wewnętrzne */
+    border: none; /* Brak obramowania */
+    border-radius: 4px; /* Zaokrąglenie rogów */
+    cursor: pointer; /* Kursor wskazujący */
+    font-size: 16px; /* Wielkość czcionki */
+    }
+
+    /* Dodatkowe stylowanie po najechaniu myszą */
+    button[type="submit"]:hover {
+        background-color: #45a049; /* Ciemniejszy kolor tła po najechaniu myszą */
+
+</style>
+</head>
+<body>
+
+{% if lost == 1 %}
+    <div class="message">
+        <h1>Niestety przegrałeś</h1>
+        <a href="{{ url_for('index') }}">Wygeneruj nową grę!</a>
+    </div>
+{% endif %}
+
+{% if win == 1 %}
+    <div class="message_to_win">
+        <h1>Gratulacje! Wygrałeś!</h1>
+        <a href="{{ url_for('index') }}">Wygeneruj nową grę!</a>
+    </div>
+{% endif %}
+
+
+<div class="container">
+    <form method="post" action="">
+        <div class="sudoku-grid">
+            {% for index, element in sudoku_without_val.items() %}
+                {% if element == '' %}
+                    <input type="text" name="field{{ index }}" value="{{ element }}" maxlength="2">
+                {% elif bad_val_index == index %}
+                    <input type="text" name="field{{ index }}" value="{{ element }}" maxlength="2" style="background-color: #ffcccc;">
+                {% else %}
+                    <input type="text" name="field{{ index }}" value="{{ element }}" maxlength="2" readonly>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+    </form>
+
+</div>
+
+</body>
+</html>
+
+
